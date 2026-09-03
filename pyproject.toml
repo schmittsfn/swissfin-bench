@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swissfin-bench"
+version = "0.0.1"
+description = "LLM benchmark for Swiss regulatory requirements (FINMA, FADP, extensible)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Stefan Schmitt" }]
+dependencies = [
+    "sqlalchemy==2.0.52",
+    "pandas==3.0.5",
+    "PyYAML==6.0.3",
+    "LiteLLM==1.98.0",
+    "ollama==0.6.2"
+]
+
+[project.optional-dependencies]
+backoffice = [
+    "streamlit==1.62.0"
+]
+test = [
+    "pytest==8.4.2",
+    "pytest-cov==7.1.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+testpaths = ["tests"]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "--cov=bench",
+    "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+fail_under = 70
+show_missing = true
+skip_covered = true
+
+[tool.setuptools.packages.find]
+include = ["bench*", "backoffice*"]

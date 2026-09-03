@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.coverage
+build/
+.env
+.env.*
+!.env.example
+
+# Local (non-example) endpoint configs and run outputs
+config/models.yaml
+config/judge.yaml
+results/
+temp/
+
+# Result stores. A run's database is local; it is never published, because it
+# embeds the task text it was run against.
+*.db
+*.db.bak
+
+# Held-back scoring set. Publishing it contaminates the benchmark.
+tasks-private/
