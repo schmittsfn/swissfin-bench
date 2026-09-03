@@ -1,0 +1,53 @@
+name: Propose a benchmark task
+description: Suggest a task for the public sample set
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Anything filed here is **public**, so it can join the public sample but
+        can never become a scoring item. For the held-back scoring set, email
+        `contact@schmittsfn.com` instead — see CONTRIBUTING.md.
+  - type: dropdown
+    id: family
+    attributes:
+      label: Task family
+      options:
+        - Grounding (paired — you must supply both halves)
+        - Redaction
+        - Injection
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source reference and date of the text
+      description: "e.g. Circ.-FINMA 23/1, Cm 70, p. 9 — in force 01.01.2024"
+      placeholder: Reference, plus a link to the official publication
+    validations:
+      required: true
+  - type: textarea
+    id: document
+    attributes:
+      label: Supplied document
+      description: The extract, or the fictional document, exactly as the model would receive it.
+    validations:
+      required: true
+  - type: textarea
+    id: instruction
+    attributes:
+      label: Instruction and expected result
+      description: |
+        For a grounding pair, give both halves and say which provision the twin removes.
+        The instruction must not ask the model to appraise compliance.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: Every person, address, identifier, IBAN and phone number here is fictional
+          required: true
+        - label: I verified the extract against the official source myself
+          required: true

@@ -158,6 +158,22 @@ documentation, explainability, independent review.
 Datenschutz), Switzerland's primary data protection law and its counterpart to
 the GDPR.
 
+## Contributing
+
+Contributions are welcome, and independent review of the existing tasks is the
+most useful of all — every task currently reads `checked_by: pending
+independent review`. German and Italian tasks are the biggest gap in what the
+benchmark can claim, since each Swiss official language carries equal legal
+authority.
+
+One thing to know before you open a pull request: **a task in a public pull
+request can join the public sample, but can never become a scoring item**,
+because public benchmark items end up in training corpora. There is a private
+route for scoring-set proposals.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for what a good task looks like, and
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
 ## Licence
 
 Apache License 2.0 — see [LICENSE](LICENSE). Copyright 2026 Stefan Schmitt.

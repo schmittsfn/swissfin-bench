@@ -1,0 +1,26 @@
+name: Bug report
+description: Something does not work, or a task is wrong
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected instead
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: Commands, task file and provider if relevant. A failing test is ideal.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Python version and OS
+  - type: markdown
+    attributes:
+      value: |
+        If a regulatory extract does not match its source, that is a correctness
+        bug and worth filing even without a fix.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Propose a scoring-set task (private)
+    url: mailto:contact@schmittsfn.com
+    about: Scoring items must never appear in public. Email them instead.
+  - name: Report a security or privacy problem
+    url: mailto:contact@schmittsfn.com
+    about: A leaked credential, or a real identifier that slipped into a task.
