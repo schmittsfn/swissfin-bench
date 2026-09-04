@@ -46,9 +46,7 @@ sqlite3 "$SWISSFIN_DB_PATH" "SELECT COUNT(*) FROM task_injection;"
 shasum -a 256 tasks/swissfin_public_sample_v0_1.yaml
 ```
 
-The canonical seed currently contains 12 grounding tasks in six positive/
-negative pairs, 13 redaction tasks, six injections, and 72 task-injection links.
-The automated dataset tests enforce these invariants.
+The published task file currently contains 4 grounding tasks in two positive/negative pairs, 4 redaction tasks, six injections, and 24 task-injection links. The automated dataset tests do not assert these particular counts.
 
 The equivalent explicit-path form is:
 

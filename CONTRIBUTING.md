@@ -1,34 +1,31 @@
 # Contributing to Swissfin Bench
 
-Contributions are welcome. This document covers the one thing that is unusual
-about contributing to a benchmark, and then the ordinary things.
+Contributions are welcome. This document covers one point that is specific to contributing to a benchmark, and then the ordinary matters.
 
-## The unusual thing: a public pull request cannot become a scoring item
+## Why one set is public and one is not
 
-The moment a task appears in a pull request it is public, and public benchmark
-items end up in training corpora. A model that has seen the answer is not being
-measured by it.
+The regulatory extracts are official Swiss texts. They are public by definition and already sit in every large training corpus, and that is not a problem here. The benchmark does not test whether a model knows Swiss regulation; it tests whether the model confines itself to the document it was supplied with. A model answering from a memorised circular fails the paired test exactly as intended.
 
-So there are two routes, and which one you want depends on what the task is for:
+What cannot be public is the pairing of a task with its expected result. Once `expected_result` sits beside its extract in a repository that is crawled, a model can recall the label rather than reason to it. That answer key is what the unpublished set protects, and it is the only thing it protects.
 
-| You want to | Route | Where it ends up |
+Both sets are run, and the difference between them is treated as a measurement: a model scoring materially higher on the public set is exhibiting the size of its own contamination.
+
+A task becomes public the moment it appears in a pull request, so the appropriate route depends on what the task is for:
+
+| Purpose | Route | Destination |
 |:--|:--|:--|
-| Add a demonstration task, fix or improve an existing one | Pull request | `tasks/swissfin_public_sample_v0_1.yaml` |
-| Propose an item for the **scoring** set | Email `contact@schmittsfn.com` | The held-back set. Never appears in this repository |
+| Add a task, or correct or improve an existing one | Pull request | the public set |
+| Propose an item for scoring | Email to contact@schmittsfn.com | the unpublished set |
 
-Neither route is more valued than the other. The public sample is what lets
-anyone understand and run the benchmark; it needs to be good.
+Neither route is valued above the other, and both accept tasks in any language. German and Italian tasks are wanted through both: in the open, because the public set has to be broad and varied enough to be useful, and by email, because the scored set is French-only at present and public contributions alone cannot change that.
 
-Both files carry a canary GUID. Please do not paste either into a hosted model.
+Both files carry a canary identifier. Please do not paste either of them into a hosted model.
 
-## What a good task looks like
+## What a task should contain
 
-Every task is one supplied document, one instruction, and one expected result.
-An instruction never asks the model to appraise compliance — no LLM should have
-that authority, and the benchmark makes no claim to it.
+Every task consists of one supplied document, one instruction, and one expected result. An instruction never asks the model to assess compliance, since no language model should hold that authority and the benchmark makes no such claim.
 
-**Regulatory extracts** must come from a public official source and carry its
-reference and the date of the text you quoted:
+**Regulatory extracts** must be taken from a public official source and must carry its reference together with the date of the text quoted:
 
 ```yaml
 source_text_references:
@@ -36,66 +33,39 @@ source_text_references:
   - https://www.finma.ch/...
 ```
 
-**All personal data must be fictional.** Use reserved placeholders — names that
-are obviously invented, `example.invalid` addresses, `CH00 …` IBANs, phone
-numbers in the `+41 XX 000 00 00` range. Never a real person, even a public
-figure, and never a real account, AVS or client number.
+**All personal data must be fictional.** Please use reserved placeholders: names that are evidently invented, `example.invalid` addresses, `CH00 …` IBANs, and telephone numbers in the `+41 XX 000 00 00` range. Never use a real person, including a public figure, and never a real account, AVS or client number.
 
-**Grounding tasks come in pairs, and you must supply both.** The pair is the
-whole idea: same question, same document, except that the twin removes the
-provision that settles it — and *only* that provision. The expected result
-flips from `SUCCESS` to `FAILURE`, where failure means the model should say the
-passage does not permit a conclusion. If the twin also changes wording,
-ordering or context, the pair no longer isolates what it claims to isolate.
+**Grounding tasks are created in pairs, and both halves are required.** The pair is the essential mechanism: the same question is asked of the same document, except that the twin omits the provision which settles it, and only that provision. The expected result changes from `SUCCESS` to `FAILURE`, where failure means that the model should state that the passage does not permit a conclusion. If the twin also alters wording, ordering or context, the pair no longer isolates what it is intended to isolate.
 
-**Set `checked_by`** to your name or handle once you have verified the extract
-against the source yourself. Tasks marked `pending independent review` have not
-been checked by a second person — see below.
+**Please set `checked_by`** to your name or handle once you have verified the extract against its source yourself. Tasks marked `pending independent review` have not yet been checked by a second person.
 
-## Where help is most useful right now
+## Where help is most useful at present
 
-- **Independent review of the existing tasks.** Every task currently reads
-  `checked_by: pending independent review`. Verifying an extract against its
-  official source, and confirming a twin removes exactly one provision, is the
-  single most valuable contribution and needs no code.
-- **German and Italian tasks.** Every Swiss official language carries equal
-  legal authority, and the task bank is currently French-only. This is a real
-  gap in what the benchmark can claim.
-- **The probabilistic half of grounding scoring.** Deterministic grading is
-  preferred wherever a result can be reproduced exactly. Where a judge is
-  unavoidable, the protocol has to address position, verbosity and
-  self-enhancement bias, and should not rest on a single model.
-- **More providers in the router**, and better failure handling for the ones
-  that are there.
-- **Packaging and deployment.** There is no Dockerfile and no deployment path.
+- **Independent review of the existing tasks.** Every task currently reads `checked_by: pending independent review`. Verifying an extract against its official source, and confirming that a twin omits exactly one provision, is the most valuable contribution available and requires no code.
+- **German and Italian tasks.** Each Swiss official language carries equal legal authority, and the task bank is at present exclusively in French. This is a genuine limitation on what the benchmark can claim.
+- **The probabilistic component of grounding assessment.** Deterministic grading is preferred wherever a result can be reproduced exactly. Where a judge model is unavoidable, the protocol must address position, verbosity and self-enhancement bias, and should not rely on a single model.
+- **Additional providers in the router**, and improved handling of failures for those already supported.
+- **Packaging and deployment.** There is at present no Dockerfile and no deployment path.
 
-## Ordinary things
+## Ordinary matters
 
-Fork, branch, and open a pull request against `main`.
+Please fork the repository, create a branch, and open a pull request against `main`.
 
 ```bash
 python -m pip install -e ".[backoffice,test]"
 python -m pytest
 ```
 
-The suite runs in seconds, makes no network calls and costs nothing. CI runs it
-on every push and pull request. Please keep it green, and add a test with a
-behaviour change — the tests assert structural invariants rather than fixed
-counts, so they hold for whichever task file is loaded.
+The test suite runs in a few seconds, makes no network calls and incurs no cost. Continuous integration runs it on every push and pull request. Please keep it passing, and add a test alongside any change in behaviour. The tests assert structural invariants rather than fixed counts, so they hold for whichever task file is loaded.
 
-Keep commits focused and explain *why* in the message, not just what.
+Please keep commits focused, and explain in the message why a change was made rather than only what it does.
 
-If you find something wrong in a regulatory extract, that is a correctness bug
-and worth an issue on its own, whether or not you have a fix.
+An error in a regulatory extract is a correctness defect and merits an issue in its own right, whether or not a correction accompanies it.
 
 ## Security and disclosure
 
-If you find something that should not be reported in public — a leaked
-credential in the history, a real identifier that slipped into a task — email
-`contact@schmittsfn.com` rather than opening an issue.
+If you find something that should not be reported publicly, such as a credential in the history or a real identifier that has found its way into a task, please write to contact@schmittsfn.com rather than opening an issue.
 
 ## Licence
 
-Swissfin Bench is Apache-2.0. Under section 5 of that licence, anything you
-deliberately submit for inclusion is contributed under the same terms, unless
-you say otherwise. There is no separate contributor licence agreement.
+Swissfin Bench is published under the Apache License 2.0. Under section 5 of that licence, anything you deliberately submit for inclusion is contributed under the same terms unless you state otherwise. There is no separate contributor licence agreement.

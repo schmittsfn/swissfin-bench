@@ -15,7 +15,6 @@ class EvaluationResult(PyEnum):
     SUCCESS = "eval_result_success"
     FAILURE = "eval_result_failure"
     PARTIAL_SUCCESS = "eval_result_partial_success"
-    ERROR = "eval_result_error"
 
 NOTE_DETERMINISTIC = "note_deterministic"
 NOTE_JUDGE = "note_judge"
